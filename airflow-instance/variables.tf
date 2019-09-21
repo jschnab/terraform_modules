@@ -36,6 +36,7 @@ variable "network_remote_state_key" {
 variable "instance_type" {
   description = "type of the Airflow instance"
   type = string
+	default = "t2.micro"
 }
 
 variable "custom_tags" {
