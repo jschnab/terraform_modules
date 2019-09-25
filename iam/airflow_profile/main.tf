@@ -58,7 +58,7 @@ resource "aws_iam_role_policy_attachment" "airflow_role_policy_attach" {
   policy_arn = "${aws_iam_policy.airflow_policy.arn}"
 }
 
-# step4: we create an instance profile from the role defined at step 1
+# step 4: we create an instance profile from the role defined at step 1
 resource "aws_iam_instance_profile" "airflow_profile" {
   name = "airflow_profile"
   role = "${aws_iam_role.airflow_role.name}"
