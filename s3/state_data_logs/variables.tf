@@ -19,6 +19,6 @@ variable "state_bucket" {
 }
 
 variable "logs_bucket" {
-	description "AWS S3 bucket where Airflow write logs"
+	description = "AWS S3 bucket where Airflow write logs"
 	type = string
 }
