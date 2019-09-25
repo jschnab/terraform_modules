@@ -1,13 +1,3 @@
-variable "region" {
-  description = "AWS region where to build infrastructure"
-  type = string
-}
-
-variable "aws_profile" {
-  description = "AWS profile Terraform should use"
-  type = string
-}
-
 variable "data_bucket" {
   description = "AWS S3 bucket where scraped data is stored"
   type = string
