@@ -21,7 +21,6 @@ data "template_file" "user_data" {
 
   vars = {
     s3_bucket = var.s3_bucket
-    logs_bucket = var.logs_bucket
     urls_s3_key = var.urls_s3_key
     user_agent = var.user_agent
     max_retries = var.max_retries

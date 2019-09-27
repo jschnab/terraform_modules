@@ -33,19 +33,3 @@ resource "aws_s3_bucket" "finance_scraping" {
     }
   }
 }
-
-resource "aws_s3_bucket" "airflow_logs" {
-  bucket = var.logs_bucket
-
-  versioning {
-		enabled = true
-  }
-
-	server_side_encryption_configuration {
-		rule {
-			apply_server_side_encryption_by_default {
-				sse_algorithm = "AES256"
-			}
-		}
-	}
-}
