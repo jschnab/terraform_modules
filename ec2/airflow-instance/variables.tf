@@ -50,6 +50,11 @@ variable "s3_bucket" {
   type = string
 }
 
+variable "logs_bucket" {
+  description = "S3 bucket where Airflow logs are stored"
+  type = string
+}
+
 variable "urls_s3_key" {
   description = "S3 key where to store the file containing the list of urls to scrape"
   type = string
