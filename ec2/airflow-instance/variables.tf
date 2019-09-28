@@ -99,8 +99,3 @@ variable "db_password" {
   description = "password to access the RDS instance"
   type = string
 }
-
- variable "my_ip" {
-  description = "IP address allowed to access the Airflow instance"
-  type = string
-}

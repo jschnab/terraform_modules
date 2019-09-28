@@ -8,6 +8,9 @@ resource "aws_db_instance" "rds_db" {
   username = var.db_username
   password = var.db_password
   db_subnet_group_name = aws_db_subnet_group.private_subnets_group.id
+	vpc_security_group_ids = [
+		data.terraform_remote_state.security_groups.outputs.database_security_group_id
+	]
   skip_final_snapshot = true
 }
 
@@ -25,7 +28,16 @@ data "terraform_remote_state" "network" {
   backend = "s3"
   config = {
     bucket = var.state_bucket
-		key = "global/network/terraform.tfstate"
+		key = "network/vpc/terraform.tfstate"
 		region = var.region
   }
+}
+
+data "terraform_remote_state" "security_groups" {
+	backend = "s3"
+	config = {
+		bucket = var.state_bucket
+		key = var.security_groups_remote_state_key
+		region = var.region
+	}
 }

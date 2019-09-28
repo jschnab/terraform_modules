@@ -1,12 +1,7 @@
-locals {
-  airflow_port = 8080
-  all_ips = ["0.0.0.0/0"]
-}
-
 resource "aws_launch_configuration" "launch_config" {
   image_id = "ami-0b69ea66ff7391e80"
   instance_type = var.instance_type
-  security_groups = [aws_security_group.sg_airflow.id]
+  security_groups = [data.terraform_remote_state.security_groups.outputs.sg_ec2_id]
   user_data = data.template_file.user_data.rendered
   key_name = var.ec2_key_pair
   iam_instance_profile = data.terraform_remote_state.iam.outputs.airflow_profile
@@ -66,39 +61,6 @@ resource "aws_autoscaling_group" "asg_airflow" {
   }
 }
 
-resource "aws_security_group" "sg_airflow" {
-  name = "${var.instance_name}-security-group"
-  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
-}
-
-resource "aws_security_group_rule" "access_to_airflow_webui" {
-	security_group_id = aws_security_group.sg_airflow.id
-  type = "ingress"
-  from_port = local.airflow_port
-  to_port = local.airflow_port
-  protocol = "tcp"
-  cidr_blocks = [var.my_ip] 
-}
-
-resource "aws_security_group_rule" "ssh_access" {
-	security_group_id = aws_security_group.sg_airflow.id
-  type = "ingress"
-  from_port = 22
-  to_port = 22
-  protocol = "tcp"
-  cidr_blocks = [var.my_ip]
-}
-
-# needed for yum
-resource "aws_security_group_rule" "outbound" {
-  security_group_id = aws_security_group.sg_airflow.id
-  type = "egress"
-  from_port = 0
-  to_port = 0
-  protocol = "-1"
-  cidr_blocks = local.all_ips
-}
-
 data "terraform_remote_state" "database" {
   backend = "s3"
   config = {
@@ -124,4 +86,13 @@ data "terraform_remote_state" "network" {
     key = var.network_remote_state_key
     region = var.region
   }
+}
+
+data "terraform_remote_state" "security_groups" {
+	backend = "s3"
+	config = {
+		bucket = var.state_bucket
+		key = var.security_groups_remote_state_key
+		region = var.region
+	}
 }
