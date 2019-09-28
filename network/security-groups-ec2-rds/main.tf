@@ -44,11 +44,11 @@ resource "aws_security_group_rule" "airflow_access" {
 	source_security_group_id = aws_security_group.sg_ec2.id
 }
 
-data "terraform_remote_state" "network" {
+data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket = var.state_bucket
-    key = var.network_remote_state_key
+    key = var.vpc_remote_state_key
     region = var.region
   }
 }
