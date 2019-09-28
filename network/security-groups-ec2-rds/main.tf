@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "outbound" {
 
 resource "aws_security_group" "sg_database" {
 	name = "database-security-group"
-	vpc_id = data.terraform_state.network.outputs.vpc_id
+	vpc_id = data.terraform_remote_state.network.outputs.vpc_id
 }
 
 resource "aws_security_group_rule" "airflow_access" {
