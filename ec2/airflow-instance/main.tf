@@ -38,8 +38,8 @@ resource "aws_autoscaling_group" "asg_airflow" {
   launch_configuration = aws_launch_configuration.launch_config.name
 
   vpc_zone_identifier = [
-    data.terraform_remote_state.network.outputs.public_subnet_1_id,
-    data.terraform_remote_state.network.outputs.public_subnet_2_id
+    data.terraform_remote_state.vpc.outputs.public_subnet_1_id,
+    data.terraform_remote_state.vpc.outputs.public_subnet_2_id
   ]
 
   min_size = 1
@@ -79,11 +79,11 @@ data "terraform_remote_state" "iam" {
   }
 }
 
-data "terraform_remote_state" "network" {
+data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket = var.state_bucket
-    key = var.network_remote_state_key
+    key = var.vpc_remote_state_key
     region = var.region
   }
 }

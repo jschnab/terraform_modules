@@ -27,3 +27,8 @@ variable "region" {
 	description = "AWS region where to build the infrastructure"
 	type = string
 }
+
+variable "network_remote_state_key" {
+	description = "S3 object key where Terraform remote state for network resources is stored"
+	type = string
+}

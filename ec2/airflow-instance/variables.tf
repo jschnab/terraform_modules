@@ -24,13 +24,18 @@ variable "db_remote_state_key" {
 }
 
 variable "iam_remote_state_key" {
-  description = "S3 key where the remote state of the IAM resources are stored"
+  description = "S3 key where the remote state of the IAM resources is stored"
   type = string
 }
 
-variable "network_remote_state_key" {
-  description = "S3 key where the remote state of the network resources are stored"
+variable "vpc_remote_state_key" {
+  description = "S3 key where the remote state of the network resources is stored"
   type = string
+}
+
+variable "security_groups_remote_state_key" {
+	description = "S3 key where the remote state of security groups is stored"
+	type = string
 }
 
 variable "instance_type" {

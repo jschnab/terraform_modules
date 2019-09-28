@@ -45,3 +45,13 @@ variable "state_bucket" {
   description = "name of the S3 bucket where remote state is stored"
   type = string
 }
+
+variable "vpc_remote_state_key" {
+	description = "S3 object key where Terraform remote state for network resources is stored"
+	type = string
+}
+
+variable "security_groups_remote_state_key" {
+	description = "S3 object key where Terraform remote state for security groups is stored"
+	type = string
+}

@@ -17,18 +17,18 @@ resource "aws_db_instance" "rds_db" {
 resource "aws_db_subnet_group" "private_subnets_group" {
   name = "finance-db-private-subnets"
   subnet_ids = [
-    data.terraform_remote_state.network.outputs.private_subnet_1_id,
-    data.terraform_remote_state.network.outputs.private_subnet_2_id
+    data.terraform_remote_state.vpc.outputs.private_subnet_1_id,
+    data.terraform_remote_state.vpc.outputs.private_subnet_2_id
   ]
   description = "Group of private subnets to place the RDS instance in"
   tags = { Name = "finance-db-private-subnets-group" }
 }
 
-data "terraform_remote_state" "network" {
+data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket = var.state_bucket
-		key = "network/vpc/terraform.tfstate"
+		key = var.vpc_remote_state_key
 		region = var.region
   }
 }
@@ -37,7 +37,7 @@ data "terraform_remote_state" "security_groups" {
 	backend = "s3"
 	config = {
 		bucket = var.state_bucket
-		key = "network/security_groups/terraform.tfstate"
+		key = var.security_groups_remote_state_key
 		region = var.region
 	}
 }
