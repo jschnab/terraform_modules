@@ -1,7 +1,11 @@
 resource "aws_launch_configuration" "launch_config" {
   image_id = "ami-0b69ea66ff7391e80"
   instance_type = var.instance_type
-  security_groups = [data.terraform_remote_state.security_groups.outputs.sg_ec2_id]
+
+  security_groups = [
+		data.terraform_remote_state.security_groups.outputs.ec2_security_group_id
+	]
+
   user_data = data.template_file.user_data.rendered
   key_name = var.ec2_key_pair
   iam_instance_profile = data.terraform_remote_state.iam.outputs.airflow_profile
