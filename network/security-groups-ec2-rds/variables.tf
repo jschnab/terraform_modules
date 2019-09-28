@@ -23,11 +23,6 @@ variable "state_bucket" {
 	type = string
 }
 
-variable "network_remote_state_key" {
-	description = "S3 object key of the file storing the network Terraform state"
-	type = string
-}
-
 variable "region" {
 	description = "AWS region where to build the infrastructure"
 	type = string
