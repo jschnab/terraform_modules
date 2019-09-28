@@ -1,6 +1,6 @@
 resource "aws_security_group" "sg_ec2" {
   name = "${var.instance_name}-security-group"
-  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
+  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
 }
 
 resource "aws_security_group_rule" "access_to_ec2_webserver" {
@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "outbound" {
 
 resource "aws_security_group" "sg_database" {
 	name = "database-security-group"
-	vpc_id = data.terraform_remote_state.network.outputs.vpc_id
+	vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
 }
 
 resource "aws_security_group_rule" "airflow_access" {
