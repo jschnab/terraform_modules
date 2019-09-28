@@ -37,7 +37,7 @@ data "terraform_remote_state" "security_groups" {
 	backend = "s3"
 	config = {
 		bucket = var.state_bucket
-		key = var.security_groups_remote_state_key
+		key = "network/security_groups/terraform.tfstate"
 		region = var.region
 	}
 }
