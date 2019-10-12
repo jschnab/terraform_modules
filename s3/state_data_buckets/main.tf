@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "finance_scraping" {
   }
 }
 
-resource "aws_s3_buket" "airflow_logs" {
+resource "aws_s3_bucket" "airflow_logs" {
 	bucket = var.remote_log_folder
 
 	versioning {
