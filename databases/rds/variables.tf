@@ -57,6 +57,6 @@ variable "security_groups_remote_state_key" {
 }
 
 variable "subnet_group_name" {
-	description "name of the subnet group of the RDS instance"
+	description = "name of the subnet group of the RDS instance"
 	type = string
 }
