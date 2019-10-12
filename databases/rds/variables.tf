@@ -55,3 +55,8 @@ variable "security_groups_remote_state_key" {
 	description = "S3 object key where Terraform remote state for security groups is stored"
 	type = string
 }
+
+variable "subnet_group_name" {
+	description "name of the subnet group of the RDS instance"
+	type = string
+}

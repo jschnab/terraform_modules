@@ -15,13 +15,12 @@ resource "aws_db_instance" "rds_db" {
 }
 
 resource "aws_db_subnet_group" "private_subnets_group" {
-  name = "finance-db-private-subnets"
+  description = "Group of private subnets to place the RDS instance in"
+  name = var.subnet_group_name
   subnet_ids = [
     data.terraform_remote_state.vpc.outputs.private_subnet_1_id,
     data.terraform_remote_state.vpc.outputs.private_subnet_2_id
   ]
-  description = "Group of private subnets to place the RDS instance in"
-  tags = { Name = "finance-db-private-subnets-group" }
 }
 
 data "terraform_remote_state" "vpc" {
