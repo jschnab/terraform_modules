@@ -15,9 +15,18 @@ resource "aws_launch_configuration" "launch_config" {
   }
 }
 
+data "template_file" "airflow_config" {
+	template = file("${path.module}/templates/airflow.cfg")
+	vars = {
+		remote_log_folder = "s3://${var.remote_log_folder}"
+		meta_db_password = var.meta_db_password
+		meta_db_address = data.terraform_remote_state.metadata_db.outputs.address
+		meta_db_port = data.terraform_remote_state.metadata_db.outputs.port
+	}
+}
+
 data "template_file" "user_data" {
   template = file("${path.module}/templates/user_data.sh")
-
   vars = {
     s3_bucket = var.s3_bucket
     urls_s3_key = var.urls_s3_key
@@ -34,7 +43,7 @@ data "template_file" "user_data" {
     port = data.terraform_remote_state.database.outputs.port
     webserver_service = file("${path.module}/templates/airflow-webserver.service")
     scheduler_service = file("${path.module}/templates/airflow-scheduler.service")
-		airflow_config = file("${path.module}/templates/airflow.cfg")
+		airflow_config = data.template_file.airflow_config.rendered
   }
 }
 
@@ -97,6 +106,15 @@ data "terraform_remote_state" "security_groups" {
 	config = {
 		bucket = var.state_bucket
 		key = var.security_groups_remote_state_key
+		region = var.region
+	}
+}
+
+data "terraform_remote_state" "metadata_db" {
+	backend = "s3"
+	config = {
+		bucket = var.state_bucket
+		key = var.metadata_db_remote_state_key
 		region = var.region
 	}
 }

@@ -38,6 +38,11 @@ variable "security_groups_remote_state_key" {
 	type = string
 }
 
+variable "metadata_db_remote_state_key" {
+	description = "S3 key where the remote state of the metadata database is stored"
+	type = string
+}
+
 variable "instance_type" {
   description = "type of the Airflow instance"
   type = string
@@ -103,4 +108,14 @@ variable "db_username" {
 variable "db_password" {
   description = "password to access the RDS instance"
   type = string
+}
+
+variable "meta_db_password" {
+	description = "password to access the Airflow metadata database"
+	type = string
+}
+
+variable "remote_log_folder" {
+	description = "name of the S3 bucket where Airflow logs are stored"
+	type = string
 }
