@@ -15,14 +15,20 @@ data "aws_iam_policy_document" "airflow_policy_document" {
     sid = "ListObjectBucket"
     effect = "Allow"  
     actions = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${var.data_bucket}"]
+    resources = [
+			"arn:aws:s3:::${var.data_bucket}",
+			"arn:aws:s3:::${var.remote_log_folder}"
+		]
   }
 
   statement {
     sid = "AllowObjectActions"
     effect = "Allow"
     actions = ["s3:*Object"]
-    resources = ["arn:aws:s3:::${var.data_bucket}/*"]
+    resources = [
+			"arn:aws:s3:::${var.data_bucket}/*",
+			"arn:aws:s3:::${var.remote_log_folder}/*"
+		]
   }
 
   statement {
