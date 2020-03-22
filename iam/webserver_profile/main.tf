@@ -38,7 +38,7 @@ resource "aws_iam_role" "webserver_role" {
 
 resource "aws_iam_policy" "webserver_policy" {
   name   = "webserver_policy"
-  policy = data.aws_policy_document.webserver_policy.json
+  policy = data.aws_iam_policy_document.webserver_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "webserver_role_policy_attach" {
