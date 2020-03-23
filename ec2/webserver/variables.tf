@@ -1,7 +1,7 @@
 variable "launch_config_prefix" {
   description = "Create a unique name beginning with the prefix"
   type        = string
-  default     = "srv-cf"
+  default     = "dashb-"
 }
 
 variable "image_id" {
