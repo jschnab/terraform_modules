@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
   }
@@ -12,55 +12,55 @@ data "aws_iam_policy_document" "assume_role" {
 # document which defines the policy we will attach to the instance role
 data "aws_iam_policy_document" "airflow_policy_document" {
   statement {
-    sid = "ListObjectBucket"
-    effect = "Allow"  
+    sid     = "ListObjectBucket"
+    effect  = "Allow"
     actions = ["s3:ListBucket"]
     resources = [
-			"arn:aws:s3:::${var.data_bucket}",
-			"arn:aws:s3:::${var.remote_log_folder}"
-		]
+      "arn:aws:s3:::${var.data_bucket}",
+      "arn:aws:s3:::${var.remote_log_folder}"
+    ]
   }
 
   statement {
-    sid = "AllowObjectActions"
-    effect = "Allow"
+    sid     = "AllowObjectActions"
+    effect  = "Allow"
     actions = ["s3:*Object"]
     resources = [
-			"arn:aws:s3:::${var.data_bucket}/*",
-			"arn:aws:s3:::${var.remote_log_folder}/*"
-		]
+      "arn:aws:s3:::${var.data_bucket}/*",
+      "arn:aws:s3:::${var.remote_log_folder}/*"
+    ]
   }
 
   statement {
-    sid = "RDSFullAccess"
-    effect = "Allow"
-    actions = ["rds:*"]
+    sid       = "RDSFullAccess"
+    effect    = "Allow"
+    actions   = ["rds:*"]
     resources = ["arn:aws:rds:${var.region}:*:*"]
   }
 
   statement {
-    sid = "RDSDescribeAll"
-    effect = "Allow"
-    actions = ["rds:Describe*"]
+    sid       = "RDSDescribeAll"
+    effect    = "Allow"
+    actions   = ["rds:Describe*"]
     resources = ["*"]
   }
 }
 
 # step 1: we create a role
 resource "aws_iam_role" "airflow_role" {
-  name = "airflow_role"
+  name               = "airflow_role"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
 }
 
 # step 2: we create a policy
 resource "aws_iam_policy" "airflow_policy" {
-  name = "airflow_policy"
+  name   = "airflow_policy"
   policy = "${data.aws_iam_policy_document.airflow_policy_document.json}"
 }
 
 # step 3: we attach the role to the policy
 resource "aws_iam_role_policy_attachment" "airflow_role_policy_attach" {
-  role = "${aws_iam_role.airflow_role.name}"
+  role       = "${aws_iam_role.airflow_role.name}"
   policy_arn = "${aws_iam_policy.airflow_policy.arn}"
 }
 
