@@ -133,3 +133,63 @@ variable "domain_name" {
   description = "Name of the web domain to use for the server"
   type        = string
 }
+
+variable "scale_out_adjustment" {
+  description = "Number of instances by which to scale out"
+  type        = number
+  default     = 1
+}
+
+variable "scale_in_adjustment" {
+  description = "Number of instances by which to scale in"
+  type        = number
+  default     = -1
+}
+
+variable "scale_cooldown" {
+  description = "Number of seconds before next scaling can start"
+  type        = number
+  default     = 300
+}
+
+variable "high_cpu_eval_periods" {
+  description = "Number of periods over which CPU is compared to high threshold"
+  type        = number
+  default     = 1
+}
+
+variable "low_cpu_eval_periods" {
+  description = "Number of periods over which CPU is compared to low threshold"
+  type        = number
+  default     = 3
+}
+
+variable "cpu_period" {
+  description = "Number of seconds over which statistic is applied to CPU utilization"
+  type        = number
+  default     = 300
+}
+
+variable "cpu_statistic" {
+  description = "Statistic to apply to CPU utilization metric"
+  type        = string
+  default     = "Average"
+}
+
+variable "high_cpu_threshold" {
+  description = "Threshold over which CPU utilization requires scale out"
+  type        = number
+  default     = 80
+}
+
+variable "low_cpu_threshold" {
+  description = "Threshold under which CPU utilization requires scale in"
+  type        = number
+  default     = 20
+}
+
+variable "cpu_unit" {
+  description = "Unit of measure of CPU utilization"
+  type        = string
+  default     = "Percent"
+}
