@@ -1,5 +1,6 @@
 resource "aws_launch_configuration" "launch_config" {
-  image_id      = "ami-0b69ea66ff7391e80"
+  name_prefix   = var.launch_config_prefix
+  image_id      = var.image_id
   instance_type = var.instance_type
 
   security_groups = [
@@ -48,7 +49,7 @@ data "template_file" "user_data" {
 }
 
 resource "aws_autoscaling_group" "asg_airflow" {
-  name                 = var.instance_name
+  name                 = "${var.instance_name}-asg"
   launch_configuration = aws_launch_configuration.launch_config.name
 
   vpc_zone_identifier = [

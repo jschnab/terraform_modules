@@ -1,3 +1,9 @@
+variable "launch_config_prefix" {
+  description = "prerix for the Airflow instance launch configuration"
+  type        = string
+  default     = "airflo"
+}
+
 variable "instance_name" {
   description = "name of the Airflow instance"
   type        = string
@@ -41,6 +47,12 @@ variable "security_groups_remote_state_key" {
 variable "metadata_db_remote_state_key" {
   description = "S3 key where the remote state of the metadata database is stored"
   type        = string
+}
+
+variable "image_id" {
+  description = "AMI to use for the Airflow instance"
+  type        = string
+  default     = "ami-0b69ea66ff7391e80"
 }
 
 variable "instance_type" {
