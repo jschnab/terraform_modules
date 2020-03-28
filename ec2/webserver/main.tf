@@ -44,6 +44,52 @@ resource "aws_autoscaling_group" "webserver" {
   }
 }
 
+resource "aws_autoscaling_policy" "scale_out_high_cpu" {
+  name                   = "${var.asg_name}-scale-out-high-cpu"
+  scaling_adjustment     = var.scale_out_adjustment
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = var.scale_cooldown
+  autoscaling_group_name = aws_autoscaling_group.webserver.name
+}
+
+resource "aws_cloudwatch_metric_alarm" "high_cpu_alarm" {
+  alarm_name          = "${var.asg_name}-high-cpu"
+  alarm_description   = "Scale out when CPU is too high"
+  namespace           = "AWS/EC2"
+  metric_name         = "CPUUtilization"
+  dimensions          = { AutoScalingGroupName = aws_autoscaling_group.webserver.name }
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = var.high_cpu_eval_periods
+  period              = var.cpu_period
+  statistic           = var.cpu_statistic
+  threshold           = var.high_cpu_threshold
+  unit                = var.cpu_unit
+  alarm_actions       = [aws_autoscaling_policy.scale_out_high_cpu.arn]
+}
+
+resource "aws_autoscaling_policy" "scale_in_low_cpu" {
+  name                   = "${var.asg_name}-scale-in-low-cpu"
+  scaling_adjustment     = var.scale_in_adjustment
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = var.scale_cooldown
+  autoscaling_group_name = aws_autoscaling_group.webserver.name
+}
+
+resource "aws_cloudwatch_metric_alarm" "low_cpu_alarm" {
+  alarm_name          = "${var.asg_name}-low-cpu"
+  alarm_description   = "Scale in when CPU is low"
+  namespace           = "AWS/EC2"
+  metric_name         = "CPUUtilization"
+  dimensions          = { AutoScalingGroupName = aws_autoscaling_group.webserver.name }
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = var.low_cpu_eval_periods
+  period              = var.cpu_period
+  statistic           = var.cpu_statistic
+  threshold           = var.low_cpu_threshold
+  unit                = var.cpu_unit
+  alarm_actions       = [aws_autoscaling_policy.scale_in_low_cpu.arn]
+}
+
 resource "aws_lb" "web_lb" {
   name_prefix = var.lb_name_prefix
   security_groups = [
@@ -101,6 +147,7 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.webserver.arn
   }
 }
+
 
 data "terraform_remote_state" "iam" {
   backend = "s3"

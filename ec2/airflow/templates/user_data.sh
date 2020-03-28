@@ -4,6 +4,7 @@ set -ex
 
 exec > >(tee /var/log/user-data.log | logger -t user-data) 2>&1
 echo BEGIN
+BEGINTIME=$(date +%S)
 date "+%Y-%m-%d %H:%M:%S"
 
 yum install -y tree git python3 gcc postgresql-devel python3-devel.x86_64
@@ -79,3 +80,8 @@ systemctl enable airflow-webserver
 systemctl enable airflow-scheduler
 systemctl start airflow-webserver
 systemctl start airflow-scheduler
+
+date "+%Y-%m-%d %H:%M:%S"
+ENDTIME=$(date +%S)
+echo "Deployment took $(($ENDTIME - $BEGINTIME)) seconds"
+echo END
