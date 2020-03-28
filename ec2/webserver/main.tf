@@ -82,7 +82,7 @@ resource "aws_cloudwatch_metric_alarm" "low_cpu_alarm" {
   metric_name         = "CPUUtilization"
   dimensions          = { AutoScalingGroupName = aws_autoscaling_group.webserver.name }
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = var.cpu_eval_periods
+  evaluation_periods  = var.low_cpu_eval_periods
   period              = var.cpu_period
   statistic           = var.cpu_statistic
   threshold           = var.low_cpu_threshold
