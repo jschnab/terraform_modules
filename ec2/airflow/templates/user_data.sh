@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -ex
+set -o pipefail
 
 exec > >(tee /var/log/user-data.log | logger -t user-data) 2>&1
 echo BEGIN
@@ -47,6 +48,8 @@ FINANCE_SCRAPING_DB_NAME=${db_name}
 FINANCE_SCRAPING_DB_TABLE=${db_table}
 EOL
 
+# variables are given the export attribute and are marked for export
+# in the environment of subsequent commands
 set -a
 source $AIRFLOW_ENV
 set +a
@@ -83,5 +86,5 @@ systemctl start airflow-scheduler
 
 date "+%Y-%m-%d %H:%M:%S"
 ENDTIME=$(date +%S)
-echo "Deployment took $(($ENDTIME - $BEGINTIME)) seconds"
+echo "Deployment took $((ENDTIME - BEGINTIME)) seconds"
 echo END
